@@ -1,7 +1,8 @@
 const { requireTopics } = require("../models /topics.model");
 
 exports.getTopics = (req, res) => {
-  requireTopics().then((data) => {
-    res.status(200).send(data.rows);
+  requireTopics().then((topics) => {
+  
+    res.status(200).send({topics});
   });
 };

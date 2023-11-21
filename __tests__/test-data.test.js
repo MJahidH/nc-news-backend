@@ -9,28 +9,27 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-  db.end();
+     return   db.end();
 });
 
 describe("api/topics", () => {
-  test("recieve status code 200", () => {
-    return request(app).get("/api/topics").expect(200);
-  });
+ 
   test("returns an array ", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
       .then((body) => {
-        const arrayOfTopics = body._body;
+        const arrayOfTopics = body.body.topics
         expect(Array.isArray(arrayOfTopics)).toBe(true);
       });
   });
-  test("check if each obj in array has the keys slug and description  ", () => {
+  test("200, check if each obj in array has the keys slug and description  ", () => {
     return request(app)
       .get("/api/topics")
-      .expect(200)
+
       .then((body) => {
-        const arrayOfTopics = body._body;
+        console.log(body.body)
+        const arrayOfTopics = body.body.topics
         const areKeysPresent = arrayOfTopics.every((obj) => {
           if (obj.slug !== null && obj.description !== null) {
             return true;
@@ -42,7 +41,7 @@ describe("api/topics", () => {
       });
   });
 
-  test("returns 404 error if topics is not present after /api ", () => {
+  test("200 , returns 404 error if topics is not present after /api ", () => {
     return (
       request(app)
         .get("/api/topic")
