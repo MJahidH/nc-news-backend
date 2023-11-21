@@ -23,7 +23,7 @@ describe("api/topics", () => {
         expect(Array.isArray(arrayOfTopics)).toBe(true);
       });
   });
-  test("200, check if each obj in array has the keys slug and description  ", () => {
+  test("expect 200 status code , check if each obj in array has the keys slug and description  ", () => {
     return request(app)
       .get("/api/topics")
 
@@ -41,7 +41,7 @@ describe("api/topics", () => {
       });
   });
 
-  test("200 , returns 404 error if topics is not present after /api ", () => {
+  test("returns 404 error if topics is not present after /api ", () => {
     return (
       request(app)
         .get("/api/topic")
