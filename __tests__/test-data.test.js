@@ -28,7 +28,7 @@ describe("api/topics", () => {
       .get("/api/topics")
 
       .then((body) => {
-        console.log(body.body)
+
         const arrayOfTopics = body.body.topics
         const areKeysPresent = arrayOfTopics.every((obj) => {
           if (obj.slug !== null && obj.description !== null) {
