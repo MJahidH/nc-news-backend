@@ -12,7 +12,7 @@ afterAll(() => {
   db.end();
 });
 
-describe.only("api/topics", () => {
+describe("api/topics", () => {
   test("recieve status code 200", () => {
     //console.log("gooooooo");
     return request(app).get("/api/topics").expect(200);
@@ -44,7 +44,7 @@ describe.only("api/topics", () => {
       });
   });
 
-  test.only("returns 404 error if topics is not present after /api ", () => {
+  test("returns 404 error if topics is not present after /api ", () => {
     return request(app)
       .get("/api/topic")
       // wrong end point name 
