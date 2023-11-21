@@ -14,7 +14,6 @@ afterAll(() => {
 
 describe("api/topics", () => {
   test("recieve status code 200", () => {
-    //console.log("gooooooo");
     return request(app).get("/api/topics").expect(200);
   });
   test("returns an array ", () => {
@@ -23,7 +22,6 @@ describe("api/topics", () => {
       .expect(200)
       .then((body) => {
         const arrayOfTopics = body._body;
-        console.log(arrayOfTopics);
         expect(Array.isArray(arrayOfTopics)).toBe(true);
       });
   });
@@ -45,11 +43,11 @@ describe("api/topics", () => {
   });
 
   test("returns 404 error if topics is not present after /api ", () => {
-    return request(app)
-      .get("/api/topic")
-      // wrong end point name 
-      .expect(404)
-
-
+    return (
+      request(app)
+        .get("/api/topic")
+        // wrong end point name
+        .expect(404)
+    );
   });
 });
