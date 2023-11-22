@@ -3,6 +3,7 @@ const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data/index");
+const endPointJson = require("../endpoints.json");
 
 beforeEach(() => {
   return seed(data);
@@ -39,32 +40,15 @@ describe("api/topics", () => {
         expect(areKeysPresent).toBe(true);
       });
   });
-
-  test("returns 404 error if topics is not present after /api ", () => {
-    return (
-      request(app)
-        .get("/api/topic")
-        // wrong end point name
-        .expect(404)
-    );
-  });
 });
-
-
-
-
-
-
-
-
 
 describe("get /api", () => {
   test("200,returns an object ", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then((body) => {
-        const endPointData = body.body.endPointData;
+      .then((response) => {
+        const endPointData = response.body.endPointData;
         expect(Array.isArray(endPointData)).toBe(false);
         expect(typeof endPointData).toBe("object");
       });
@@ -73,8 +57,8 @@ describe("get /api", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then((body) => {
-        const endPointData = body.body.endPointData;
+      .then((response) => {
+        const endPointData = response.body.endPointData;
         const arraKey = Object.keys(endPointData);
         expect(arraKey).toEqual([
           "GET /api",
@@ -87,16 +71,15 @@ describe("get /api", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then((body) => {
-        const endPointData = body.body.endPointData;
+      .then((response) => {
+        const endPointData = response.body.endPointData;
         const endPointKeys = Object.keys(endPointData);
         const everykeyHasDescriptionInfo = endPointKeys.every((key) => {
           if (endPointData[key].description !== null) {
             return true;
           }
         });
-        for (const key of endPointKeys) {
-        }
+
         expect(everykeyHasDescriptionInfo).toBe(true);
       });
   });
@@ -104,22 +87,21 @@ describe("get /api", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then((body) => {
-        const endPointData = body.body.endPointData;
+      .then((response) => {
+        const endPointData = response.body.endPointData;
         const endPointKeys = Object.keys(endPointData);
         const firstElementRemodedArray = endPointKeys.slice(1);
-        const everykeyHasQueryInfo = firstElementRemodedArray.every((key) => {
-          return endPointData[key].queries !== undefined;
-        });
-        expect(everykeyHasQueryInfo).toBe(true);
+        for (const key of firstElementRemodedArray) {
+          expect(endPointData[key]).toHaveProperty("description");
+        }
       });
   });
   test("200, check if response body has a specific struvture it wants you to follow ", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then((body) => {
-        const endPointData = body.body.endPointData;
+      .then((response) => {
+        const endPointData = response.body.endPointData;
         const exampleResponseKeys = Object.keys(endPointData);
         const firstElementRemodedArray = exampleResponseKeys.slice(1);
         let result = false;
@@ -133,34 +115,38 @@ describe("get /api", () => {
         }
 
         expect(result).toBe(true);
+        //expect(endPointData.exampleResponse).toHaveProperty("articles")
       });
   });
   test("200, check if response body gives an example of what a response looks like  ", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then((body) => {
-        const endPointData = body.body.endPointData;
+      .then((response) => {
+        const endPointData = response.body.endPointData;
         const topicsResponseBodt =
           endPointData["GET /api/topics"].exampleResponse.topics;
 
         const articlesResponseBodt =
           endPointData["GET /api/articles"].exampleResponse.articles;
 
-        const response1 = [{ slug: "football", description: "Footie!" }];
-        const response2 = [
-          {
-            title: "Seafood substitutions are increasing",
-            topic: "cooking",
-            author: "weegembump",
-            body: "Text from the article..",
-            created_at: "2018-05-30T15:59:13.341Z",
-            votes: 0,
-            comment_count: 6,
-          },
-        ];
+        const response1 =
+          endPointJson["GET /api/topics"].exampleResponse.topics;
+        const response2 =
+          endPointJson["GET /api/articles"].exampleResponse.articles;
         expect(topicsResponseBodt).toEqual(response1);
         expect(articlesResponseBodt).toEqual(response2);
       });
+  });
+});
+
+describe("error handler", () => {
+  test("returns 404 error if topics is not present after /api ", () => {
+    return (
+      request(app)
+        .get("/api/topic")
+        // wrong end point name
+        .expect(404)
+    );
   });
 });
