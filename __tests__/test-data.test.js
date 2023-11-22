@@ -50,3 +50,23 @@ describe("api/topics", () => {
     );
   });
 });
+
+
+describe.only("GET /api/articles/:article_id", () =>{
+    
+  test('returns article api ', () => {
+    return request(app)
+    .get("/api/articles")
+    .expect(200)
+  });
+  test('returns article api ', () => {
+    return request(app)
+    .get("/api/articles/1")
+    .expect(200)
+    .then((body)=>{
+      console.log(body)
+      expect(body).toEqual(body)
+    })
+  });
+
+});
