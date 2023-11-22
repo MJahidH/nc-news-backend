@@ -41,101 +41,13 @@ describe("api/topics", () => {
       });
   });
 });
-
-describe("get /api", () => {
-  test("200,returns an object ", () => {
+describe("GET /api", () => {
+  test("200,returns the endpoint ", () => {
     return request(app)
       .get("/api")
       .expect(200)
       .then((response) => {
-        const endPointData = response.body.endPointData;
-        expect(Array.isArray(endPointData)).toBe(false);
-        expect(typeof endPointData).toBe("object");
-      });
-  });
-  test("200, check if the key in each object matches the api path and contains information  ", () => {
-    return request(app)
-      .get("/api")
-      .expect(200)
-      .then((response) => {
-        const endPointData = response.body.endPointData;
-        const arraKey = Object.keys(endPointData);
-        expect(arraKey).toEqual([
-          "GET /api",
-          "GET /api/topics",
-          "GET /api/articles",
-        ]);
-      });
-  });
-  test("200, check if each nested obj contains a description with a information inisde it  ", () => {
-    return request(app)
-      .get("/api")
-      .expect(200)
-      .then((response) => {
-        const endPointData = response.body.endPointData;
-        const endPointKeys = Object.keys(endPointData);
-        const everykeyHasDescriptionInfo = endPointKeys.every((key) => {
-          if (endPointData[key].description !== null) {
-            return true;
-          }
-        });
-
-        expect(everykeyHasDescriptionInfo).toBe(true);
-      });
-  });
-  test("200, check if each nested obj, other than GET /api, contains a queries key with a information inisde it  ", () => {
-    return request(app)
-      .get("/api")
-      .expect(200)
-      .then((response) => {
-        const endPointData = response.body.endPointData;
-        const endPointKeys = Object.keys(endPointData);
-        const firstElementRemodedArray = endPointKeys.slice(1);
-        for (const key of firstElementRemodedArray) {
-          expect(endPointData[key]).toHaveProperty("description");
-        }
-      });
-  });
-  test("200, check if response body has a specific struvture it wants you to follow ", () => {
-    return request(app)
-      .get("/api")
-      .expect(200)
-      .then((response) => {
-        const endPointData = response.body.endPointData;
-        const exampleResponseKeys = Object.keys(endPointData);
-        const firstElementRemodedArray = exampleResponseKeys.slice(1);
-        let result = false;
-        for (const key of firstElementRemodedArray) {
-          const obj = endPointData[key].exampleResponse;
-          const keyArr = Object.keys(obj);
-          let objData = obj[keyArr[0]];
-          if (Object.keys(objData).length > 0) {
-            result = true;
-          }
-        }
-
-        expect(result).toBe(true);
-        //expect(endPointData.exampleResponse).toHaveProperty("articles")
-      });
-  });
-  test("200, check if response body gives an example of what a response looks like  ", () => {
-    return request(app)
-      .get("/api")
-      .expect(200)
-      .then((response) => {
-        const endPointData = response.body.endPointData;
-        const topicsResponseBodt =
-          endPointData["GET /api/topics"].exampleResponse.topics;
-
-        const articlesResponseBodt =
-          endPointData["GET /api/articles"].exampleResponse.articles;
-
-        const response1 =
-          endPointJson["GET /api/topics"].exampleResponse.topics;
-        const response2 =
-          endPointJson["GET /api/articles"].exampleResponse.articles;
-        expect(topicsResponseBodt).toEqual(response1);
-        expect(articlesResponseBodt).toEqual(response2);
+        expect(response.body.endPoints).toEqual(endPointJson);
       });
   });
 });

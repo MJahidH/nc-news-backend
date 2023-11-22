@@ -1,9 +1,5 @@
-const { requireApi } = require("../models /api.model");
+const endPoints = require("../endpoints.json");
 
-
-exports.getApi = (req, res,next) => {
-
-  requireApi().then((endPointData) => {
-    res.status(200).send({endPointData})   
-  }).catch(next)
+exports.getApi = (req, res, next) => {
+  res.status(200).send({ endPoints });
 };
