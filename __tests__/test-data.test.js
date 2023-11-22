@@ -9,17 +9,16 @@ beforeEach(() => {
 });
 
 afterAll(() => {
-     return   db.end();
+  return db.end();
 });
 
 describe("api/topics", () => {
- 
   test("returns an array ", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
       .then((body) => {
-        const arrayOfTopics = body.body.topics
+        const arrayOfTopics = body.body.topics;
         expect(Array.isArray(arrayOfTopics)).toBe(true);
       });
   });
@@ -28,8 +27,7 @@ describe("api/topics", () => {
       .get("/api/topics")
 
       .then((body) => {
-
-        const arrayOfTopics = body.body.topics
+        const arrayOfTopics = body.body.topics;
         const areKeysPresent = arrayOfTopics.every((obj) => {
           if (obj.slug !== null && obj.description !== null) {
             return true;
@@ -51,22 +49,17 @@ describe("api/topics", () => {
   });
 });
 
-
-describe.only("GET /api/articles/:article_id", () =>{
-    
-  test('returns article api ', () => {
-    return request(app)
-    .get("/api/articles")
-    .expect(200)
+describe.only("GET /api/articles/:article_id", () => {
+  test("returns article api ", () => {
+    return request(app).get("/api/articles").expect(200);
   });
-  test('returns article api ', () => {
+  test("returns article api ", () => {
     return request(app)
-    .get("/api/articles/1")
-    .expect(200)
-    .then((body)=>{
-      console.log(body)
-      expect(body).toEqual(body)
-    })
+      .get("/api/articles/1")
+      .expect(200)
+      .then((response) => {
+        const arrayOfArticles = response.body;
+        expect(response).toEqual(response);
+      });
   });
-
 });
