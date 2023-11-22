@@ -50,7 +50,15 @@ describe("api/topics", () => {
   });
 });
 
-describe.only("get /api", () => {
+
+
+
+
+
+
+
+
+describe("get /api", () => {
   test("200,returns an object ", () => {
     return request(app)
       .get("/api")
