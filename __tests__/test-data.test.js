@@ -49,17 +49,34 @@ describe("api/topics", () => {
   });
 });
 
-describe.only("GET /api/articles/:article_id", () => {
+describe("GET /api/articles/:article_id", () => {
   test("returns article api ", () => {
     return request(app).get("/api/articles").expect(200);
   });
-  test("returns article api ", () => {
+  test("200,check if it returns an array ", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
       .then((response) => {
-        const arrayOfArticles = response.body;
-        expect(response).toEqual(response);
+        const arrayOfArticles = response.body.data;
+        expect(Array.isArray(arrayOfArticles)).toBe(true);
       });
+  });
+  test("200,returns the correct obj ", () => {
+    return request(app)
+      .get("/api/articles/2")
+      .expect(200)
+      .then((response) => {
+        const arrayOfArticles = response.body.data;
+        const articleId = arrayOfArticles[0].article_id;
+        expect(articleId).toBe(2);
+      });
+  });
+
+  test("400, article must be a number ", () => {
+    return request(app).get("/api/articles/j").expect(400);
+  });
+  test("204, no content fouund  ", () => {
+    return request(app).get("/api/articles/500").expect(204);
   });
 });

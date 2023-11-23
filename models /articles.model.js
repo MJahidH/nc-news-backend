@@ -6,13 +6,15 @@ exports.requireArticles = () => {
   });
 };
 
-exports.requireArticleById = (content_id) => {
+exports.requireArticleById = (article_id) => {
+
+
   return db
     .query(
       `SELECT * FROM articles 
-  WHERE content_id = ${content_id}`
+  WHERE article_id = ${article_id};`
     )
     .then((body) => {
-      return body;
+      return body.rows
     });
 };
