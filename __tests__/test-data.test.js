@@ -49,7 +49,7 @@ describe("api/topics", () => {
   });
 });
 
-describe("GET /api/articles/:article_id", () => {
+describe.only("GET /api/articles/:article_id", () => {
   test("returns article api ", () => {
     return request(app).get("/api/articles").expect(200);
   });
@@ -62,7 +62,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(Array.isArray(arrayOfArticles)).toBe(true);
       });
   });
-  test("200,returns the correct obj ", () => {
+  test.only("200,returns the correct obj ", () => {
     return request(app)
       .get("/api/articles/2")
       .expect(200)
@@ -70,11 +70,14 @@ describe("GET /api/articles/:article_id", () => {
         const arrayOfArticles = response.body.data;
         const articleId = arrayOfArticles[0].article_id;
         expect(articleId).toBe(2);
+        expect(arrayOfArticles[0]).toHaveProperty("article_id")
       });
   });
 
   test("400, article must be a number ", () => {
-    return request(app).get("/api/articles/j").expect(400);
+    return request(app)
+    .get("/api/articles/j")
+    .expect(404)
   });
   test("204, no content fouund  ", () => {
     return request(app).get("/api/articles/500").expect(204);
