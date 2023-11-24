@@ -3,7 +3,7 @@ const { requireArticleById } = require("../models /articles.model");
 
 exports.getArticles = (req, res) => {
   requireArticles().then((data) => {
-    res.status(200).send(data);
+    res.status(200).send({ data: data });
   });
 };
 exports.getArticleById = (req, res, next) => {

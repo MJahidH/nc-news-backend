@@ -50,17 +50,21 @@ describe("api/topics", () => {
   });
 });
 
-describe("GET /api/articles/:article_id", () => {
+describe("GET /api/articles", () => {
   test("returns article api ", () => {
     return request(app).get("/api/articles").expect(200);
   });
-  test("200,check if it returns an array ", () => {
+  test("200,check if it returns the right keys ", () => {
     return request(app)
-      .get("/api/articles/1")
+      .get("/api/articles")
       .expect(200)
       .then((response) => {
         const arrayOfArticles = response.body.data;
-        expect(Array.isArray(arrayOfArticles)).toBe(true);
+
+        expect(arrayOfArticles[0]).toHaveProperty("title");
+        expect(arrayOfArticles[0]).toHaveProperty("topic");
+        expect(arrayOfArticles[0]).toHaveProperty("author");
+        expect(arrayOfArticles[0]).toHaveProperty("body");
       });
   });
   test("200,returns the correct obj ", () => {
@@ -68,18 +72,31 @@ describe("GET /api/articles/:article_id", () => {
       .get("/api/articles/2")
       .expect(200)
       .then((response) => {
-        const arrayOfArticles = response.body.data;
-        const articleId = arrayOfArticles[0].article_id;
+        const articleObj = response.body.data;
+        const articleId = articleObj.article_id;
         expect(articleId).toBe(2);
-        expect(arrayOfArticles[0].title).toBe(articleData[1].title);
-        expect(arrayOfArticles[0].topic).toBe(articleData[1].topic);
-        expect(arrayOfArticles[0].author).toBe(articleData[1].author);
-        expect(arrayOfArticles[0].body).toBe(articleData[1].body);
+        expect(articleObj.title).toBe(articleData[1].title);
+        expect(articleObj.topic).toBe(articleData[1].topic);
+        expect(articleObj.author).toBe(articleData[1].author);
+        expect(articleObj.body).toBe(articleData[1].body);
         //        expect(arrayOfArticles[0]).toBe(articleData[2])
       });
   });
 
+  test("404, no column found with htis specific name  ", () => {
+    return request(app)
+      .get("/api/articles/900")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("Not Found");
+      });
+  });
   test("400, no column found with htis specific name  ", () => {
-    return request(app).get("/api/articles/j").expect(404);
+    return request(app)
+      .get("/api/articles/jl")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
   });
 });

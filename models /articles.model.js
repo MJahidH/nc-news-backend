@@ -7,14 +7,19 @@ exports.requireArticles = () => {
 };
 
 exports.requireArticleById = (article_id) => {
-
-
   return db
     .query(
       `SELECT * FROM articles 
-  WHERE article_id = ${article_id};`
+  WHERE article_id = $1 ;`,
+      [article_id]
     )
     .then((body) => {
-      return body.rows
+      if (!body.rows[0]) {
+        return Promise.reject({
+          status: 404,
+          msg: "Not Found",
+        });
+      }
+      return body.rows[0];
     });
 };
