@@ -94,7 +94,7 @@ describe.only("GET /api/articles (task 5 )", () => {
         });
       });
   });
-  test.only("200, check if the every article does not contain the body key ", () => {
+  test("200, check if the every article does not contain the body key ", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -103,6 +103,14 @@ describe.only("GET /api/articles (task 5 )", () => {
         for (const obj of arrayOfArticles) {
           expect(obj.hasOwnProperty("body")).toBe(false);
         }
+      });
+  });
+  test.only("404, no column found with htis specific name  ", () => {
+    return request(app)
+      .get("/api/art")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.msg).toBe("Not Found");
       });
   });
 });
