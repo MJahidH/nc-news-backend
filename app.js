@@ -8,7 +8,7 @@ app.get("/api", getApi);
 
 app.get("/api/topics", getTopics);
 
-app.use("/api/articles", getArticles);
+app.get("/api/articles", getArticles);
 
 app.all("*",(req, res, next) => {
   res.status(404).send({ msg: "Not Found" });
