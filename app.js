@@ -4,7 +4,6 @@ const app = express();
 const { getArticles } = require("./controllers/articles.controller");
 const { getArticleById } = require("./controllers/articles.controller");
 
-app.use(express.json());
 
 app.get("/api/topics", getTopics);
 

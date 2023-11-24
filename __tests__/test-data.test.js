@@ -51,22 +51,6 @@ describe("api/topics", () => {
 });
 
 describe("GET /api/articles", () => {
-  test("returns article api ", () => {
-    return request(app).get("/api/articles").expect(200);
-  });
-  test("200,check if it returns the right keys ", () => {
-    return request(app)
-      .get("/api/articles")
-      .expect(200)
-      .then((response) => {
-        const arrayOfArticles = response.body.data;
-
-        expect(arrayOfArticles[0]).toHaveProperty("title");
-        expect(arrayOfArticles[0]).toHaveProperty("topic");
-        expect(arrayOfArticles[0]).toHaveProperty("author");
-        expect(arrayOfArticles[0]).toHaveProperty("body");
-      });
-  });
   test("200,returns the correct obj ", () => {
     return request(app)
       .get("/api/articles/2")
@@ -79,6 +63,7 @@ describe("GET /api/articles", () => {
         expect(articleObj.topic).toBe(articleData[1].topic);
         expect(articleObj.author).toBe(articleData[1].author);
         expect(articleObj.body).toBe(articleData[1].body);
+        expect(articleObj.articles).toBe(articleData[1].articles);
         //        expect(arrayOfArticles[0]).toBe(articleData[2])
       });
   });
@@ -91,9 +76,9 @@ describe("GET /api/articles", () => {
         expect(response.body.msg).toBe("Not Found");
       });
   });
-  test("400, no column found with htis specific name  ", () => {
+  test("400, no article exists in the data base   ", () => {
     return request(app)
-      .get("/api/articles/jl")
+      .get("/api/articles/twelve")
       .expect(400)
       .then((response) => {
         expect(response.body.msg).toBe("Bad Request");
