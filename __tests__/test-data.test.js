@@ -73,7 +73,7 @@ describe("GET /api/articles (task 5 )", () => {
       .get("/api/articles")
       .expect(200)
       .then((res) => {
-        //      console.log(articleData,"this is the the required in file ")
+        expect(res.body.articles.length).not.toBe(0);
         for (const obj of res.body.articles) {
           expect(obj).toHaveProperty("author");
           expect(obj).toHaveProperty("title");
