@@ -4,6 +4,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data/index");
 const endPointJson = require("../endpoints.json");
+const articleData = require("../db/data/test-data/articles")
 
 beforeEach(() => {
   return seed(data);
@@ -62,3 +63,32 @@ describe("error handler", () => {
     );
   });
 });
+
+
+describe.only("GET /api/articles (task 5 )", () =>{
+  test.only('200, returns article and checks if all objects have the keys they need ', () => {
+     return request(app)
+     .get("/api/articles")
+     .expect(200)
+     .then((res)=>{
+      console.log(res.body,"this is the response body")
+//      console.log(articleData,"this is the the required in file ")
+     for (let obj of res.body) {
+      expect(obj).toHaveProperty("author")
+      expect(obj).toHaveProperty("title")
+      expect(obj).toHaveProperty("article_id")
+      expect(obj).toHaveProperty("topic")
+      expect(obj).toHaveProperty("created_at")
+      expect(obj).toHaveProperty("votes")
+      expect(obj).toHaveProperty("article_img_url")
+
+     }
+     })
+
+  });
+    
+});
+
+
+
+
