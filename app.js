@@ -8,6 +8,9 @@ const {addComments} = require("./controllers/comments.controller")
 const {updateVotes} = require("./controllers/articles.controller")
 const { getApi } = require("./controllers/api.controller");
 const { deleteComment } = require("./controllers/comments.controller")
+const cors = require('cors');
+
+app.use(cors());
 
 app.use(express.json())
 
