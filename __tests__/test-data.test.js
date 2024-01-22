@@ -115,7 +115,7 @@ describe("GET /api/articles (task 5 )", () => {
         expect(res.body.msg).toBe("Not Found");
       });
   });
-  describe("GET /api/articles", () => {
+  describe("GET /api/articles/articles_id", () => {
     test("200,returns the correct obj ", () => {
       return request(app)
         .get("/api/articles/2")
@@ -186,7 +186,6 @@ describe("GET /api/articles/:article_id/comments", () => {
       .get("/api/articles/1/comments")
       .expect(200)
       .then((res) => {
-        console.log(res.body.data);
         const arrayOfComments = res.body.data;
         expect(arrayOfComments).toBeSortedBy("created_at", {
           descending: true,
@@ -255,7 +254,6 @@ describe(" PATCH /api/articles/:article_id", () => {
       .send({ inc_votes: 3 })
       .expect(200)
       .then((res) => {
-        console.log(res.body);
         const articleData = res.body.data;
         expect(articleData).toEqual({
           article_id: 1,
@@ -297,23 +295,21 @@ describe(" PATCH /api/articles/:article_id", () => {
         expect(res.body.msg).toBe("Bad Request");
       });
   });
-  
 });
-
 
 describe("DELETE /api/comments/:comment_id", () => {
   test("200, check if row was deleted", () => {
     return request(app)
-    .delete("/api/comments/7")
-    .expect(204)
-    .then(()=>{
-      return request(app)
-      .get("/api/articles/7/comments")
-      .expect(404)
-      .then((res)=>{
-        expect(res.body.msg).toBe("Not Found");
-      })
-    })
+      .delete("/api/comments/7")
+      .expect(204)
+      .then(() => {
+        return request(app)
+          .get("/api/articles/7/comments")
+          .expect(404)
+          .then((res) => {
+            expect(res.body.msg).toBe("Not Found");
+          });
+      });
   });
   test("400 article id does not exist ", () => {
     return request(app)
@@ -333,8 +329,5 @@ describe("DELETE /api/comments/:comment_id", () => {
   });
 });
 
-
-
-
-// link 
+// link
 // postgresql://postgres:[YOUR-PASSWORD]@db.dyivksoohagaiozmtabm.supabase.co:5432/postgres
