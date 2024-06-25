@@ -9,7 +9,8 @@
     "test": "PGDATABASE=nc_news_test jest",
     "prepare": "husky install",
     "start": "node listen.js",
-    "seed-prod": "NODE_ENV=production npm run seed"
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "vercel-build": "echo hello"
   },
   "repository": {
     "type": "git",
